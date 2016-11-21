@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dizdaSql:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/dizdaSql_jar</output-path>
+    <root id="archive" name="dizdaSql.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="dizdaSql" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

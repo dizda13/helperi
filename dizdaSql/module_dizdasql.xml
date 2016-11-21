@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_dizdasql" default="compile.module.dizdasql">
+  <dirname property="module.dizdasql.basedir" file="${ant.file.module_dizdasql}"/>
+  
+  <property name="module.jdk.home.dizdasql" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dizdasql" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dizdasql" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.dizdasql" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="dizdasql.output.dir" value="${module.dizdasql.basedir}/target/classes"/>
+  <property name="dizdasql.testoutput.dir" value="${module.dizdasql.basedir}/target/test-classes"/>
+  
+  <path id="dizdasql.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="dizdasql.module.production.classpath">
+    <path refid="${module.jdk.classpath.dizdasql}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="dizdasql.runtime.production.module.classpath">
+    <pathelement location="${dizdasql.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="dizdasql.module.classpath">
+    <path refid="${module.jdk.classpath.dizdasql}"/>
+    <pathelement location="${dizdasql.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="dizdasql.runtime.module.classpath">
+    <pathelement location="${dizdasql.testoutput.dir}"/>
+    <pathelement location="${dizdasql.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.dizdasql">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.dizdasql">
+    <patternset refid="excluded.from.module.dizdasql"/>
+  </patternset>
+  
+  <path id="dizdasql.module.sourcepath">
+    <dirset dir="${module.dizdasql.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="dizdasql.module.test.sourcepath">
+    <dirset dir="${module.dizdasql.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.dizdasql" depends="compile.module.dizdasql.production,compile.module.dizdasql.tests" description="Compile module dizdaSql"/>
+  
+  <target name="compile.module.dizdasql.production" depends="register.custom.compilers" description="Compile module dizdaSql; production classes">
+    <mkdir dir="${dizdasql.output.dir}"/>
+    <javac2 destdir="${dizdasql.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dizdasql}/javac">
+      <compilerarg line="${compiler.args.dizdasql}"/>
+      <bootclasspath refid="dizdasql.module.bootclasspath"/>
+      <classpath refid="dizdasql.module.production.classpath"/>
+      <src refid="dizdasql.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dizdasql"/>
+    </javac2>
+    
+    <copy todir="${dizdasql.output.dir}">
+      <fileset dir="${module.dizdasql.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.dizdasql.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.dizdasql.tests" depends="register.custom.compilers,compile.module.dizdasql.production" description="compile module dizdaSql; test classes" unless="skip.tests">
+    <mkdir dir="${dizdasql.testoutput.dir}"/>
+    <javac2 destdir="${dizdasql.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dizdasql}/javac">
+      <compilerarg line="${compiler.args.dizdasql}"/>
+      <bootclasspath refid="dizdasql.module.bootclasspath"/>
+      <classpath refid="dizdasql.module.classpath"/>
+      <src refid="dizdasql.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dizdasql"/>
+    </javac2>
+    
+    <copy todir="${dizdasql.testoutput.dir}">
+      <fileset dir="${module.dizdasql.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.dizdasql" description="cleanup module">
+    <delete dir="${dizdasql.output.dir}"/>
+    <delete dir="${dizdasql.testoutput.dir}"/>
+  </target>
+</project>
